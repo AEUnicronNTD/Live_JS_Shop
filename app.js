@@ -1,3 +1,35 @@
+const loginBtn = document.getElementById('loginBtn');
+const overlay = document.querySelector('.overlay');
+const modal = document.querySelector('.login-modal');
+const closeBtn = document.querySelector('.close-login');
+
+function openLoginModal() {
+  if (!overlay || !modal) return;
+  overlay.classList.remove('hidden');
+  modal.classList.remove('hidden');
+}
+
+function closeLoginModal() {
+  overlay.classList.add('hidden');
+  modal.classList.add('hidden');
+}
+
+if (loginBtn) {
+  loginBtn.addEventListener('click', openLoginModal);
+}
+if (closeBtn) {
+  closeBtn.addEventListener('click', closeLoginModal);
+}
+if (overlay) {
+  overlay.addEventListener('click', closeLoginModal);
+}
+
+
+
+
+let cart = [];
+let allProducts = [];  // 用來存放商品資料
+
 fetch("products.json")
 	.then(function (response) {
 		if (!response.ok) {
@@ -13,6 +45,9 @@ fetch("products.json")
 			console.log("目前沒有商品可以顯示");
 			return; // 提早結束這個 then
 		}
+
+		// 把商品資料存到全域變數
+		allProducts = products;
 
 		// 有商品資料的情況
 		console.log("載入到的商品資料:", products);
@@ -37,9 +72,27 @@ addToCartButtons.forEach(function(button) {
   });
 });
 
-// 假設我們有一個函式用來處理加入購物車的邏輯
+const existingItem = cart.find(function(item) {
+  return item.id === productId;
+});
+
+// 函式用來處理加入購物車的邏輯
 function addToCart(productId) {
-	console.log('將商品加入購物車，商品ID:', productId);
+  const existingItem = cart.find(function(item) {
+    return item.id === productId;
+  });
+
+  if (existingItem) {
+    // 已經在購物車裡 → 數量 +1
+    existingItem.quantity = existingItem.quantity + 1;
+  } else {
+    // 還沒在購物車裡 → 新增一筆
+    cart.push({ id: productId, quantity: 1 });
+  }
+
+  console.log('目前購物車:', cart);
+  console.log('購物車總價:', calculateTotal());
+  renderCartSummary();
 }
 
 
@@ -53,7 +106,61 @@ removeFromCartButtons.forEach(function(button) {
   });
 });
 
-// 假設我們有一個函式用來處理從購物車移除的邏輯
+// 函式用來處理從購物車移除的邏輯
 function removeFromCart(productId) {
-	console.log('將商品從購物車移除，商品ID:', productId);
+  const existingItem = cart.find(function(item) {
+    return item.id === productId;
+  });
+
+  if (existingItem) {
+    if (existingItem.quantity > 1) {
+      // 數量大於 1 → 數量 -1
+      existingItem.quantity = existingItem.quantity - 1;
+    } else {
+      // 數量等於 1 → 整筆移除
+      cart = cart.filter(function(item) {
+        return item.id !== productId;
+      });
+    }
+  }
+
+  console.log('目前購物車:', cart);
+  console.log('購物車總價:', calculateTotal());
+  renderCartSummary();
+}
+
+// 計算商品價格的函式
+function calculateTotal() {
+  let total = 0;
+
+  cart.forEach(function(item) {
+    // 根據 item.id 從 allProducts 找到對應的商品資料
+    const product = allProducts.find(function(p) {
+      return p.id === item.id;
+    });
+
+    // 如果找到了對應的商品資料，就把價格乘以數量加到 total 上
+    if (product) {
+      const subtotal = product.price * item.quantity;
+      total = total + subtotal;
+    }
+  });
+  
+  return total;
+}
+
+//計算最後總價的函式
+function renderCartSummary() {
+  // 計算總件數
+  let totalCount = 0;
+  cart.forEach(function(item) {
+    totalCount = totalCount + item.quantity;
+  });
+
+  // 計算總價
+  const totalPrice = calculateTotal();
+
+  // 顯示在頁面上
+  document.querySelector('.cart-count').textContent = totalCount;
+  document.querySelector('.cart-total').textContent = totalPrice;
 }
