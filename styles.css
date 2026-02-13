@@ -16,23 +16,23 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);  /* 半透明黑色 */
+  background-color: rgba(0, 0, 0, 0.5);  /* 遮罩層背景半透明黑色 */
   z-index: 999;  /* 在最上層，但低於彈窗 */
-}
+}  
 
-/* 登入彈窗：白色小視窗，置中顯示 */
+/* /* 登入彈窗：白色小視窗，置中顯示  */
 .login-modal {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);  /* 置中技巧 */
+  transform: translate(-50%, -50%);  /* 置中技巧  */
   background-color: white;
   padding: 2rem;
   border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);  /* 陰影 */
-  z-index: 1001;  /* 在遮罩之上 */
-  min-width: 300px;
-}
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);  /* 陰影  */
+  z-index: 1000;   /* 在遮罩之上  */
+  min-width: 300px; /* 彈窗寬度 */
+} 
 
 /* 關閉按鈕 */
 .close-login {
@@ -160,3 +160,4 @@ body {
   aspect-ratio: 1 / 1; /* 正方形 */
   object-fit: cover;   /* 以不變形為主，超出就裁掉 */
 }
+

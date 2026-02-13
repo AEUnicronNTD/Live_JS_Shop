@@ -1,35 +1,35 @@
+//先選取到該元素
 const loginBtn = document.getElementById('loginBtn');
 const overlay = document.querySelector('.overlay');
 const modal = document.querySelector('.login-modal');
 const closeBtn = document.querySelector('.close-login');
 
+//針對元素進行展開彈窗操作
 function openLoginModal() {
   if (!overlay || !modal) return;
   overlay.classList.remove('hidden');
   modal.classList.remove('hidden');
 }
-
+//關閉彈窗
 function closeLoginModal() {
   overlay.classList.add('hidden');
   modal.classList.add('hidden');
 }
-
+//滑鼠點擊事件
 if (loginBtn) {
   loginBtn.addEventListener('click', openLoginModal);
-}
+} //按X關閉彈窗
 if (closeBtn) {
   closeBtn.addEventListener('click', closeLoginModal);
-}
+} //點選背景也能關閉彈窗
 if (overlay) {
   overlay.addEventListener('click', closeLoginModal);
 }
 
-
-
-
-let cart = [];
+let cart = []; //購物車變數
 let allProducts = [];  // 用來存放商品資料
 
+//導入json資料
 fetch("products.json")
 	.then(function (response) {
 		if (!response.ok) {
@@ -72,11 +72,7 @@ addToCartButtons.forEach(function(button) {
   });
 });
 
-const existingItem = cart.find(function(item) {
-  return item.id === productId;
-});
-
-// 函式用來處理加入購物車的邏輯
+// 函式用來處理加入購物車的項目
 function addToCart(productId) {
   const existingItem = cart.find(function(item) {
     return item.id === productId;
@@ -95,7 +91,7 @@ function addToCart(productId) {
   renderCartSummary();
 }
 
-
+//移除購物車項目
 const removeFromCartButtons = document.querySelectorAll('.remove-from-cart');
 
 removeFromCartButtons.forEach(function(button) {
