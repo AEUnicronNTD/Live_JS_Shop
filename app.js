@@ -26,6 +26,78 @@ if (overlay) {
   overlay.addEventListener('click', closeLoginModal);
 }
 
+//資料驗證彈窗內部按鈕綁定
+const submitLogin = document.querySelector(".submitLogin");
+
+if (submitLogin) {
+  submitLogin.addEventListener("click", function() {
+  
+    const usernameInput = document.getElementById("username");
+    const passwordInput = document.getElementById("password");
+    // 2. 取得它們的 value
+    const usernameValue = usernameInput.value;
+    const passwordValue = passwordInput.value;
+
+    // 3. 設定正確的帳號密碼
+    const correctUsername = 'admin@gmail.com';  //正確的帳號資料測試用
+    const correctPassword = 'abc1234';
+    //主要驗證資料的函式(validateLogin)套用
+    const result = validateLogin(usernameValue, passwordValue);
+
+      if (result.ok) {  // 驗證格式成功
+      // 再比對帳號密碼是否正確
+        if (usernameValue === correctUsername && passwordValue === correctPassword) {
+          alert('帳號登入成功！');
+          closeLoginModal(); //關閉視窗
+        } else {
+          alert('帳號或密碼錯誤');
+        }
+      } else {  // 驗證格式失敗
+          alert(result.errors.join('\n'));  // 顯示所有錯誤（換行分隔）
+      }
+    })
+  };
+  
+    
+  //驗證資料的主要函式
+function validateLogin (emailRaw,passwordRaw) {
+    //去掉空白
+    const email = emailRaw.trim();
+    const password = passwordRaw.trim();
+    //裝所有錯誤訊息的陣列
+    const errors = []; 
+
+    //確認資料是否為全空白
+    if (!email ) {
+      errors.push("請輸入電子郵件地址");
+    }
+    if (!password) {
+      errors.push("請輸入密碼");
+    }
+  
+    //先檢查email格式     
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+      errors.push("電子郵件格式不正確!"); //error.push = 丟進errors陣列裡
+    }
+    //檢查密碼長度
+    if (password.length < 6) {
+      errors.push("密碼至少需6個字元");
+    }
+    
+    // 如果有錯誤，回傳 ok: false
+    if (errors.length > 0) {
+        return {
+            ok: false, //表示驗證「沒通過」
+            errors: errors //把所有累積的錯誤訊息陣列一起送回去。
+        };
+    }
+    // 沒有錯誤，回傳 ok: true
+    return {
+      ok: true
+    };
+  }
+
 let cart = []; //購物車變數
 let allProducts = [];  // 用來存放商品資料
 
