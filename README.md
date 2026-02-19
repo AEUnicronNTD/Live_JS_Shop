@@ -15,5 +15,8 @@
 - 功能模組拆解
 - 閱讀與調整產生的程式碼
 
+## 預覽
+https://aeunicronntd.github.io/Live_JS_Shop/
+
 ## 備註
 本專案為學習用途，部分程式碼由copilot工具輔助生成。
