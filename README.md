@@ -1,12 +1,11 @@
 # 專案名稱
 - 購物網站練習（Copilot 協作）
-
-## 預覽
-https://aeunicronntd.github.io/Live_JS_Shop/
-
 此專案為前端學習練習，
 透過 Copilot 輔助專案架構與功能實作，
 並搭配自行理解與調整程式碼內容。
+
+## 預覽
+https://aeunicronntd.github.io/Live_JS_Shop/
 
 ## 使用技術
 - HTML
